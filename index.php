@@ -56,10 +56,14 @@
     </div>
 
     <div id="kateogorije_put">
+        <input type="text" name="kategorija_id" id="kateogorija_id" placeholder="Unesite ID kategorije">
+        <br>
         <input type="text" name="kategoirja_naziv_put" id="kategorija_naziv_put" placeholder="Unesite novi naziv kategorije">
     </div>
 
     <div id="novosti_put">
+        <input type="text" name="novosti_id" id="novosti_id" placeholder="Unesite ID novosti">
+        <br>
         <input type="text" name="naslov_novosti_put" placeholder="Unesite novi naslov novosti">
         <br>
         <textarea name="tekst_novosti_put" id="tekst_novosti_put" cols="30" rows="10" placeholder="Unestite tekst"></textarea>
@@ -84,7 +88,7 @@
 
 </form>
 </body>
-</html>
+
 
 <script>
 
@@ -194,9 +198,55 @@
                         });
                     }
                     break;
+                    case "put":
+                    if(tabela=="radio_novosti"){
+                        var values={
+                            "naslov": $("input[name=naslov_novosti_put]").val() ,
+                            "tekst": $("#tekst_novosti_put").val(),
+                            "kategorija_id": parseInt($("#kategorija_odabir_put").val())
+                        };
+                        $.ajax({
+                            url:"http://localhost:/rest-2/api/novosti/"+parseInt($("input[name=novosti_id]").val()),
+                            type:"PUT",
+                            data:JSON.stringify(values)
+                        }).done(function(data){
+                            alert("Odgovor sa servera> "+data["poruka"]);
+                        });
+                    }else{
+                        var values={
+                            "kategorija": $("input[name=kategorija_naziv_put").val() 
+                        };
+                        $.ajax({
+                            url:"http://localhost:/rest-2/api/kategorije/"+parseInt($("input[name=kategorija_id]").val()),
+                            type:"PUT",
+                            data:JSON.stringify(values)
+                        }).done(function(data){
+                            alert("Odgovor sa servera> "+data["poruka"]);
+                        });
+                    }
+                    break;
+                case "delete":
+                    if(tabela=="radio_novosti"){
+                        $.ajax({
+                            url:"http://localhost:/rest-2/api/novosti/"+parseInt($("input[name=brisanje]").val()),
+                            type:"DELETE",
+                            data:JSON.stringify(values)
+                        }).done(function(data){
+                            alert("Odgovor sa servera> "+data["poruka"]);
+                        });
+                    }else{
+                        $.ajax({
+                            url:"http://localhost:/rest-2/api/kategorije/"+parseInt($("input[name=brisanje]").val()),
+                            type:"DELETE",
+                            data:JSON.stringify(values)
+                        }).done(function(data){
+                            alert("Odgovor sa servera> "+data["poruka"]);
+                        });
+                    }
+                    break;
                 default: console.log("def");
             }
         }
     }
-
 </script>
+</html>
